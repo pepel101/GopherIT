@@ -7,6 +7,22 @@ import (
 
 func handleConnection(conn net.Conn) error {
 	log.Println("Got a straggler in the MUD")
+
+	buf := make([]byte, 4096)
+	for {
+		n, err := conn.Read(buf)
+		if err != nil {
+			log.Println("error reading from buffer", err)
+			return err
+		}
+		if n == 0 {
+			log.Println("Zero bytes, closing connection")
+			break
+		}
+		msg := string(buf)
+		log.Println("received msg", msg)
+	}
+
 	return nil
 }
 
