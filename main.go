@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 )
@@ -20,7 +21,19 @@ func handleConnection(conn net.Conn) error {
 			break
 		}
 		msg := string(buf)
+		log.Println(buf)
 		log.Println("received msg", msg)
+
+		resp := fmt.Sprintf("You said, \"%s\"\r\n", msg)
+		n, err = conn.Write([]byte(resp))
+		if err != nil {
+			log.Println("error reading from buffer", err)
+			return err
+		}
+		if n == 0 {
+			log.Println("Zero bytes, closing connection")
+			break
+		}
 	}
 
 	return nil
