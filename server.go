@@ -47,7 +47,7 @@ func handleConnection(conn net.Conn, inputChannel chan SessionEvent) error {
 			break
 		}
 
-		input := string(buf[0 : n-2])
+		input := string(buf[0:n])
 		log.Println("Received message:", input)
 
 		inputChannel <- SessionEvent{session, &SessionInputEvent{input}}
