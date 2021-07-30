@@ -1,0 +1,6 @@
+A
+This is a room with a sign that has the letter A written on it.
+east:B
+B
+this is a room with the letter B written on it
+west:A
