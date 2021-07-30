@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"runtime"
+	"strings"
+)
 
 type World struct {
 	characters []*Character
@@ -13,7 +17,7 @@ func NewWorld() *World {
 
 func (w *World) Init() {
 	w.rooms = []*Room{
-		{
+		/*{
 			Id:   "A",
 			Desc: "This is a room with a sign that has the letter A written on it.",
 			Links: []*RoomLink{
@@ -32,8 +36,13 @@ func (w *World) Init() {
 					RoomId: "A",
 				},
 			},
-		},
+		},*/
 	}
+	roomsInit()
+}
+
+func (w *World) addRoom(room *Room) {
+	w.rooms = append(w.rooms, room)
 }
 
 func (w *World) HandleCharacterJoined(character *Character) {
@@ -62,13 +71,23 @@ func (w *World) GetRoomById(id string) *Room {
 func (w *World) HandleCharacterInput(character *Character, input string) {
 	room := character.Room
 	for _, link := range room.Links {
+		if runtime.GOOS == "windows" {
+			input = strings.TrimRight(input, "\r\n")
+		} else {
+			input = strings.TrimRight(input, "\n")
+		}
+		input = strings.TrimSpace(input)
 		if link.Verb == input {
+			eq := true
+			fmt.Println("aaaa", eq)
 			target := w.GetRoomById(link.RoomId)
 			if target != nil {
 				w.MoveCharacter(character, target)
 				return
 			}
 		}
+		eq := false
+		fmt.Println("aaa", eq)
 	}
 
 	character.SendMessage(fmt.Sprintf("You said " + input))
