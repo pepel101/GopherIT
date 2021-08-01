@@ -3,4 +3,10 @@ This is a room with a sign that has the letter A written on it.
 east:B
 B
 this is a room with the letter B written on it
-west:A
+west:A,north:C,south:D
+C
+this is a room with the letter C written on it
+south:B
+D
+this is a room with the letter D written on it
+north:B

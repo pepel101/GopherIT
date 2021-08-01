@@ -59,6 +59,15 @@ func (w *World) HandleCharacterJoined(character *Character) {
 
 }
 
+func (w *World) HandleCharacterMoved(character *Character) {
+	for _, other := range character.Room.Characters {
+		if other != character {
+			other.SendMessage(fmt.Sprintf(character.Name + " joined the room"))
+		}
+	}
+
+}
+
 func (w *World) GetRoomById(id string) *Room {
 	for _, r := range w.rooms {
 		if r.Id == id {
@@ -83,11 +92,14 @@ func (w *World) HandleCharacterInput(character *Character, input string) {
 			target := w.GetRoomById(link.RoomId)
 			if target != nil {
 				w.MoveCharacter(character, target)
+				w.HandleCharacterMoved(character)
 				return
 			}
+		} else {
+			eq := false
+			fmt.Println("aaa", eq)
 		}
-		eq := false
-		fmt.Println("aaa", eq)
+
 	}
 
 	character.SendMessage(fmt.Sprintf("You said " + input))
