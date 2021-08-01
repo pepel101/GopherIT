@@ -43,7 +43,7 @@ func (r *Room) roomInitDesc(Desc string) {
 }
 
 func (r *Room) addLink(Verb string, RoomId string) {
-	var Link *RoomLink
+	Link := &RoomLink{}
 	Link.RoomId = RoomId
 	Link.Verb = Verb
 	r.Links = append(r.Links, Link)
