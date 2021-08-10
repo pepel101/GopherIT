@@ -1,12 +1,49 @@
 package main
 
 type Room struct {
-	Id    string
-	Desc  string
-	Links []*RoomLink
+	Id         string
+	Desc       string
+	Links      []*RoomLink
+	Key        string       `xml:"key,attr"`
+	Tag        string       `xml:"tag,attr"`
+	Name       string       `xml:"name"`
+	Directions []*Direction `xml:"directions>direction"`
+	Actions    []*Action    `xml:"actions>action"`
+	Messages   []*Message   `xml:"messages>message"`
+	Intro      string       `xml:"desc"`
+	//Asciimation Asciimation `xml:"asciimation"`
 
 	Characters []*Character
 }
+
+type Message struct {
+	Text         string       `xml:"text"`
+	Dependencies []Dependency `xml:"dep"`
+}
+
+type Action struct {
+	Name         string       `xml:"name,attr"`
+	Hidden       string       `xml:"hidden,attr"`
+	Dependencies []Dependency `xml:"dep"`
+	Answer       string       `xml:"ok"`
+}
+
+type Direction struct {
+	Station      string       `xml:"room"`
+	Hidden       bool         `xml:"hidden,attr"`
+	Dependencies []Dependency `xml:"dep"`
+	Direction    string       `xml:"name"`
+}
+
+type Dependency struct {
+	Key         string `xml:"key,attr"`
+	Type        string `xml:"type,attr"`
+	MinValue    string `xml:"minValue"`
+	MaxValue    string `xml:"maxValue"`
+	OkMessage   string `xml:"okMessage"`
+	FailMessage string `xml:"failMessage"`
+}
+
 type RoomLink struct {
 	Verb   string
 	RoomId string
@@ -47,4 +84,12 @@ func (r *Room) addLink(Verb string, RoomId string) {
 	Link.RoomId = RoomId
 	Link.Verb = Verb
 	r.Links = append(r.Links, Link)
+}
+
+func (r *Room) directions() []*Direction {
+	return r.Directions
+}
+
+func (r *Room) actions() []*Action {
+	return r.Actions
 }

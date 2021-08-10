@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"runtime"
 	"strings"
 )
 
@@ -38,7 +37,6 @@ func (w *World) Init() {
 			},
 		},*/
 	}
-	roomsInit()
 }
 
 func (w *World) addRoom(room *Room) {
@@ -78,8 +76,8 @@ func (w *World) GetRoomById(id string) *Room {
 }
 
 func (w *World) HandleCharacterInput(character *Character, input string) {
-	room := character.Room
-	for _, link := range room.Links {
+	//room := character.Room
+	/*for _, link := range room.Links {
 		if runtime.GOOS == "windows" {
 			input = strings.TrimRight(input, "\r\n")
 		} else {
@@ -101,12 +99,39 @@ func (w *World) HandleCharacterInput(character *Character, input string) {
 		}
 
 	}
+	*/
 
-	character.SendMessage(fmt.Sprintf("You said " + input))
+	inputParts := strings.SplitN(input, " ", 2)
 
-	for _, other := range character.Room.Characters {
-		if other != character {
-			other.SendMessage(fmt.Sprintf(character.Name + " said, " + input))
+	var command, commandText string
+	if len(inputParts) > 1 {
+		command = inputParts[0]
+		commandText = inputParts[1]
+
+		switch command {
+		case "say":
+			fallthrough
+		case "speak":
+			character.SendMessage(fmt.Sprintf("You said " + commandText))
+
+			for _, other := range character.Room.Characters {
+				if other != character {
+					other.SendMessage(fmt.Sprintf(character.Name + " said " + commandText))
+				}
+			}
+		case "go":
+			fallthrough
+		case "exit":
+
+		}
+
+	} else {
+		character.SendMessage(fmt.Sprintf("You said " + input))
+
+		for _, other := range character.Room.Characters {
+			if other != character {
+				other.SendMessage(fmt.Sprintf(character.Name + " said " + input))
+			}
 		}
 	}
 }

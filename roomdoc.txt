@@ -1,12 +1,12 @@
 A
-This is a room with a sign that has the letter A written on it.
+This is a room with a sign that has the letter A written on it. There is a door leading to the east
 east:B
 B
-this is a room with the letter B written on it
+this is a room with the letter B written on it. There are doors to the west, north, and south.
 west:A,north:C,south:D
 C
-this is a room with the letter C written on it
+this is a room with the letter C written on it. There is a door to the south
 south:B
 D
-this is a room with the letter D written on it
+this is a room with the letter D written on it. There is a door to the north.
 north:B

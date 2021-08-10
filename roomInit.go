@@ -2,8 +2,11 @@ package main
 
 import (
 	"bufio"
+	"encoding/xml"
+	"io/ioutil"
+	"log"
 	"os"
-	"strings"
+	"path/filepath"
 )
 
 func readLines(path string) ([]string, error) {
@@ -21,7 +24,7 @@ func readLines(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
-func roomsInit() ([]*Room, error) {
+/*func roomsInit() ([]*Room, error) {
 	r := []*Room{}
 	roomdoc, err := readLines("/usr/go/src/gopherit/GopherIT/roomdoc.txt")
 	if err != nil {
@@ -54,4 +57,32 @@ func roomsInit() ([]*Room, error) {
 
 	}
 	return r, err
+}
+*/
+
+func (w *World) roomsInit() error {
+	log.Println("Loading rooms")
+	recroomload := func(filePath string, fileInfo os.FileInfo, err error) error {
+
+		if fileInfo.IsDir() {
+			return nil
+		}
+		content, f_err := ioutil.ReadFile(filePath)
+		if f_err != nil {
+			log.Printf("File %s could not be loaded", filePath)
+			return f_err
+		}
+		room := Room{}
+
+		if xmlerr := xml.Unmarshal(content, &room); xmlerr != nil {
+			log.Printf("Couldn't unmarshal %s %s", filePath, xmlerr)
+			return xmlerr
+		}
+		log.Printf("loaded %s", fileInfo.Name())
+		w.addRoom(&room)
+		return nil
+
+	}
+	return filepath.Walk("/usr/go/src/gopherit/GopherIT/rooms", recroomload)
+
 }

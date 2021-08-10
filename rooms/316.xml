@@ -1,0 +1,24 @@
+<room key="316" tag ="default">
+    <name>Hooper_316</name>
+    <desc>Ahhh, home sweet home</desc>
+    <directions>
+        <direction>
+            <name>out</name>
+            <room>Hooper_3</room>
+        </direction>
+    </directions>
+    <actions>
+        <action name="pc">
+            <dep key ="powerplant:power">
+                <fail>Uh oh, the power seems to have failed</fail>
+            </dep>
+            <ok>Send in your final!</ok>
+        </action>
+    </actions>
+    <messages>
+        <message>
+            <text>You notice your NERF blaster in the corner</text>
+            <dep key="bathroom:mirror1"/>
+        </message>
+    </messages>
+</room>
