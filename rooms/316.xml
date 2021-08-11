@@ -5,6 +5,7 @@
         <direction>
             <name>out</name>
             <room>Hooper_3</room>
+            <key>hoop3</key>
         </direction>
     </directions>
     <actions>

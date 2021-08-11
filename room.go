@@ -33,6 +33,7 @@ type Direction struct {
 	Hidden       bool         `xml:"hidden,attr"`
 	Dependencies []Dependency `xml:"dep"`
 	Direction    string       `xml:"name"`
+	DirKey       string       `xml:"key"`
 }
 
 type Dependency struct {

@@ -122,7 +122,13 @@ func (w *World) HandleCharacterInput(character *Character, input string) {
 		case "go":
 			fallthrough
 		case "exit":
-
+			var toRoom *Room
+			for _, dir := range character.Room.Directions {
+				if strings.ToLower(strings.TrimSpace(commandText)) == dir.Direction {
+					toRoom = w.getRoomByKey(dir.DirKey)
+				}
+			}
+			w.MoveCharacter(character, toRoom)
 		}
 
 	} else {
@@ -139,5 +145,14 @@ func (w *World) HandleCharacterInput(character *Character, input string) {
 func (world *World) MoveCharacter(character *Character, to *Room) {
 	character.Room.RemoveCharacter(character)
 	to.AddCharacter(character)
-	character.SendMessage(to.Desc)
+	character.SendMessage(to.Intro)
+}
+
+func (w *World) getRoomByKey(key string) *Room {
+	for _, room := range w.rooms {
+		if room.Key == key {
+			return room
+		}
+	}
+	return nil
 }

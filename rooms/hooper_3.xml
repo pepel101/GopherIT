@@ -5,10 +5,12 @@
         <direction>
             <name>316</name>
             <room>Hooper_316</room>
+            <key>316</key>
         </direction>
         <direction>
             <name>bathroom</name>
             <room>Hooper3_WC</room>
+            <key></key>
         </direction>
     </directions>
     <actions>
