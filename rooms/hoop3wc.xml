@@ -1,0 +1,27 @@
+<room key="hoop3wc">
+    <name>Hooper 3 Bathroom</name>
+    <desc>The bathroom of Hooper 3</desc>
+    <directions>
+        <direction>
+            <name>out</name>
+            <room>Hooper_3</room>
+            <key>hoop3</key>
+        </direction>
+    </directions>
+    <actions>
+        <action name="mirror">
+            <dep key ="316:start">
+                <fail>Uh oh, the power seems to have failed</fail>
+                <ok>You see yourself in the mirror and the red bandana around your arm!
+                    Oh shoot, it's HvZ! ANd you forgot your blaster in your room!</ok>
+            </dep>
+            <ok>You see yourself in the mirror and the red bandana around your arm! Oh shoot, it's HvZ! ANd you forgot your blaster in your room!</ok>
+        </action>
+    </actions>
+    <messages>
+        <message>
+            <text>It's light enough for you to see yourself in the mirror</text>
+            <dep key="316:start"/>
+        </message>
+    </messages>
+</room>

@@ -15,11 +15,19 @@
             </dep>
             <ok>Send in your final!</ok>
         </action>
+        <action name="blaster">
+            <dep key="hoop3wc:mirror">
+                <fail> There is a powerful veil of forgetfulness obscuring the corner of the room, maybe wash up?</fail>
+                <ok>You grab your NERF gun but notice that you only have 5 points of ammo and a note on the blaster: I requisitioned your ammo to the 401 defense fund, your friend, the Fox</ok>
+            </dep>
+
+        </action>
     </actions>
     <messages>
         <message>
             <text>You notice your NERF blaster in the corner</text>
-            <dep key="bathroom:mirror1"/>
+            <dep key="hoop3wc:mirror"/>
+            <end>316:blaster</end>
         </message>
     </messages>
 </room>

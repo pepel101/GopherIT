@@ -15,28 +15,7 @@ func NewWorld() *World {
 }
 
 func (w *World) Init() {
-	w.rooms = []*Room{
-		/*{
-			Id:   "A",
-			Desc: "This is a room with a sign that has the letter A written on it.",
-			Links: []*RoomLink{
-				{
-					Verb:   "east",
-					RoomId: "B",
-				},
-			},
-		},
-		{
-			Id:   "B",
-			Desc: "This is a room with a sign that has the letter B written on it.",
-			Links: []*RoomLink{
-				{
-					Verb:   "west",
-					RoomId: "A",
-				},
-			},
-		},*/
-	}
+	w.rooms = []*Room{}
 }
 
 func (w *World) addRoom(room *Room) {
@@ -48,7 +27,9 @@ func (w *World) HandleCharacterJoined(character *Character) {
 
 	character.SendMessage("Welcome!")
 	character.SendMessage("")
-	character.SendMessage(character.Room.Desc)
+	character.SendMessage(character.Room.Intro)
+	character.LogAction("316:start")
+	character.SendMessage(fmt.Sprintf("You see the following exits: %s", character.Room.directions()))
 	for _, other := range character.Room.Characters {
 		if other != character {
 			other.SendMessage(fmt.Sprintf(character.Name + " joined the room"))
@@ -107,31 +88,58 @@ func (w *World) HandleCharacterInput(character *Character, input string) {
 	if len(inputParts) > 1 {
 		command = inputParts[0]
 		commandText = inputParts[1]
-
-		switch command {
-		case "say":
-			fallthrough
-		case "speak":
-			character.SendMessage(fmt.Sprintf("You said " + commandText))
-
-			for _, other := range character.Room.Characters {
-				if other != character {
-					other.SendMessage(fmt.Sprintf(character.Name + " said " + commandText))
-				}
-			}
-		case "go":
-			fallthrough
-		case "exit":
-			var toRoom *Room
-			for _, dir := range character.Room.Directions {
-				if strings.ToLower(strings.TrimSpace(commandText)) == dir.Direction {
-					toRoom = w.getRoomByKey(dir.DirKey)
-				}
-			}
-			w.MoveCharacter(character, toRoom)
-		}
-
 	} else {
+		command = strings.TrimSpace(inputParts[0])
+	}
+
+	switch command {
+	case "say":
+		fallthrough
+	case "speak":
+		character.SendMessage(fmt.Sprintf("You said " + commandText))
+
+		for _, other := range character.Room.Characters {
+			if other != character {
+				other.SendMessage(fmt.Sprintf(character.Name + " said " + commandText))
+			}
+		}
+	case "go":
+		fallthrough
+	case "exit":
+		var toRoom *Room
+		val := false
+		for _, dir := range character.Room.Directions {
+			if strings.ToLower(strings.TrimSpace(commandText)) == dir.Direction {
+				toRoom = w.getRoomByKey(dir.DirKey)
+				w.MoveCharacter(character, toRoom)
+				val = true
+			}
+		}
+		if !val {
+			character.SendMessage("please specify the direction you want to go")
+		}
+	default:
+		action, gotAction := character.Room.getAction(command)
+		if gotAction {
+			aAction, err := character.Room.actionByName(command)
+			if err != nil {
+				character.SendMessage("No such action")
+			}
+			allowed, msg := character.Room.CanDoAction(aAction, *character)
+			if msg != "" {
+				character.SendMessage(msg)
+			}
+			if allowed {
+				character.LogAction(action)
+
+			}
+
+		} else {
+			character.SendMessage("No such action")
+		}
+	}
+
+	/* else {
 		character.SendMessage(fmt.Sprintf("You said " + input))
 
 		for _, other := range character.Room.Characters {
@@ -139,13 +147,32 @@ func (w *World) HandleCharacterInput(character *Character, input string) {
 				other.SendMessage(fmt.Sprintf(character.Name + " said " + input))
 			}
 		}
-	}
+	}*/
 }
 
 func (world *World) MoveCharacter(character *Character, to *Room) {
 	character.Room.RemoveCharacter(character)
 	to.AddCharacter(character)
 	character.SendMessage(to.Intro)
+	character.SendMessage(fmt.Sprintf("You see the following exits: %s", character.Room.directions()))
+	if len(to.Messages) > 0 {
+		for _, m := range to.Messages {
+			if len(m.Dependencies) > 0 {
+				ok, _ := CheckDependencies(m.Dependencies, *character, "No messages")
+				if ok {
+					if !m.Ended(character) {
+						character.SendMessage(m.Text)
+					}
+
+				}
+			} else {
+				if !m.Ended(character) {
+					character.SendMessage(m.Text)
+				}
+			}
+		}
+	}
+
 }
 
 func (w *World) getRoomByKey(key string) *Room {

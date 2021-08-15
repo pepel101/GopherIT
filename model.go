@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/xml"
 	"fmt"
 	"math/rand"
+	"strings"
 )
 
 type SessionEvent struct {
@@ -32,13 +34,36 @@ type User struct {
 }
 
 type Character struct {
-	Name string
-	User *User
-	Room *Room
+	Name       string
+	User       *User
+	Room       *Room
+	XMLName    xml.Name    `xml:"player"`
+	Nickname   string      `xml:"nickname,attr"`
+	Gamename   string      `xml:"name"`
+	Position   string      `xml:"position,attr"`
+	PlayerType string      `xml:"type"`
+	Ch         chan string `xml:"-"`
+	ActionLog  []string    `xml:"actions>action"`
+	//Attributes []Attribute `xml:"attributes>attribute"`
 }
 
 func (c *Character) SendMessage(msg string) {
 	c.User.Session.WriteLine(msg)
+}
+
+func (c *Character) LogAction(action string) {
+	if !c.HasAction(action) {
+		c.ActionLog = append(c.ActionLog, strings.ToLower(action))
+	}
+}
+
+func (c *Character) HasAction(action string) bool {
+	for _, a := range c.ActionLog {
+		if strings.ToLower(a) == strings.ToLower(action) {
+			return true
+		}
+	}
+	return false
 }
 
 func generateName() string {

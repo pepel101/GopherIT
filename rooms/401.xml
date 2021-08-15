@@ -1,19 +1,9 @@
-<room key="hoop3">
-    <name>Hooper3</name>
-    <desc>The hallway of Hooper 3</desc>
+<room key="h401">
+    <name>Hooper 401</name>
+    <desc>The fox den</desc>
     <directions>
         <direction>
-            <name>316</name>
-            <room>Hooper_316</room>
-            <key>316</key>
-        </direction>
-        <direction>
-            <name>bathroom</name>
-            <room>Hooper3_WC</room>
-            <key>hoop3wc</key>
-        </direction>
-        <direction>
-            <name>up</name>
+            <name>out</name>
             <room>Hooper 4</room>
             <key>hoop4</key>
         </direction>
@@ -22,14 +12,15 @@
         <action name="lightswitch">
             <dep key ="powerplant:power">
                 <fail>Uh oh, the power seems to have failed</fail>
-            </dep>
-            <ok>The light goes on</ok>
+                <ok>The light goes on</ok>
+            </dep> 
         </action>
     </actions>
     <messages>
         <message>
             <text>You notice the lightswitch is in the off position</text>
             <dep key="316:start"/>
+            <end key="powerplant:power"/>
         </message>
     </messages>
 </room>

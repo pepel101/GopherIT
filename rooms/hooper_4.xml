@@ -1,21 +1,21 @@
-<room key="hoop3">
+<room key="hoop4">
     <name>Hooper3</name>
-    <desc>The hallway of Hooper 3</desc>
+    <desc>The hallway of Hooper 4</desc>
     <directions>
         <direction>
-            <name>316</name>
-            <room>Hooper_316</room>
-            <key>316</key>
+            <name>down</name>
+            <room>Hooper 3</room>
+            <key>hoop3</key>
+        </direction>
+        <direction>
+            <name>401</name>
+            <room>Hooper 401</room>
+            <key>h401</key>
         </direction>
         <direction>
             <name>bathroom</name>
-            <room>Hooper3_WC</room>
-            <key>hoop3wc</key>
-        </direction>
-        <direction>
-            <name>up</name>
-            <room>Hooper 4</room>
-            <key>hoop4</key>
+            <room>Hooper4_WC</room>
+            <key>hoop4wc</key>
         </direction>
     </directions>
     <actions>
