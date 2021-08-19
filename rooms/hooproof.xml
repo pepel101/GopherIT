@@ -1,0 +1,31 @@
+<room key="hooproof">
+    <name>Hooper Roof</name>
+    <desc>The roof of Mary Fisher</desc>
+    <directions>
+        <direction>
+            <name>window</name>
+            <room>Hooper 4 Bathroom</room>
+            <key>hoop4wc</key>
+        </direction>
+        <direction>
+            <name>jump</name>
+            <room>Limbo</room>
+            <key>limbo</key>
+        </direction>
+    </directions>
+    <actions>
+        <action name="void">
+            <dep key ="316:start">
+                <fail>Uh oh, the power seems to have failed</fail>
+                <ok>As you stare into the void, you notice that the void stares back at you invitingly and beckons</ok>
+            </dep>
+            <ok>As you stare into the void, you notice that the void stares back at you invitingly and beckons</ok>
+        </action>
+    </actions>
+    <messages>
+        <message>
+            <text>As you look towards the chapel in the distance you notice a shimmering void hoering in the air halfway to the ground</text>
+            <dep key="316:start"/>
+        </message>
+    </messages>
+</room>

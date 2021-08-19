@@ -12,8 +12,7 @@
         <action name="mirror">
             <dep key ="316:start">
                 <fail>Uh oh, the power seems to have failed</fail>
-                <ok>You see yourself in the mirror and the red bandana around your arm!
-                    Oh shoot, it's HvZ! ANd you forgot your blaster in your room!</ok>
+                <ok>You see yourself in the mirror and the red bandana around your arm!Oh shoot, it's HvZ! ANd you forgot your blaster in your room!</ok>
             </dep>
             <ok>You see yourself in the mirror and the red bandana around your arm! Oh shoot, it's HvZ! ANd you forgot your blaster in your room!</ok>
         </action>
